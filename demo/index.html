@@ -242,19 +242,7 @@
     }
 
     function requestSensorPermission() {
-      if ( window.DeviceMotionEvent.requestPermission ) {
-        window.DeviceMotionEvent.requestPermission()
-				.then(response => {
-					if (response == 'granted') {
-						// permission granted
-						console.log('granted');
-            init_gn();
-					} else {
-						// permission not granted
-						console.log('rejected')
-					}
-				})
-      }
+      gn.requestPermission();
 		}
 
     function showDO() {
