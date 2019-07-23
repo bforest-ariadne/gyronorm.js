@@ -82,6 +82,7 @@
           </div>
 
           <input type="button" onclick="set_head_gn()" value="Set Head Direction" class="col-xs-12 btn-warning btn"/>
+          <input type="button" onclick="requestSensorPermission()" value="request sensor permission" class="col-xs-12 btn-warning btn" style="margin-top: 10%;"/>
 
         </div>
         <div role="tabpanel" class="tab-pane" id="dm">
@@ -238,6 +239,20 @@
     function set_head_gn() {
       gn.setHeadDirection();
     }
+
+    function requestSensorPermission() {
+				window.DeviceMotionEvent.requestPermission()
+				.then(response => {
+					if (response == 'granted') {
+						// permission granted
+						console.log('granted');
+            init_gn();
+					} else {
+						// permission not granted
+						console.log('rejected')
+					}
+				})
+			}
 
     function showDO() {
       $('#do').show();
