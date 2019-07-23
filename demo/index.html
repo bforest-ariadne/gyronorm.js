@@ -193,7 +193,7 @@
 
         start_gn();
       }).catch(function(e){
-        $('#requestPermission').show();
+        if ( window.DeviceMotionEvent.requestPermission ) $('#requestPermission').show();
         console.log(e);
         
       });
@@ -242,7 +242,8 @@
     }
 
     function requestSensorPermission() {
-				window.DeviceMotionEvent.requestPermission()
+      if ( window.DeviceMotionEvent.requestPermission ) {
+        window.DeviceMotionEvent.requestPermission()
 				.then(response => {
 					if (response == 'granted') {
 						// permission granted
@@ -253,7 +254,8 @@
 						console.log('rejected')
 					}
 				})
-			}
+      }
+		}
 
     function showDO() {
       $('#do').show();
