@@ -82,8 +82,6 @@
           </div>
 
           <input type="button" onclick="set_head_gn()" value="Set Head Direction" class="col-xs-12 btn-warning btn"/>
-          <input type="button" onclick="requestSensorPermission()" value="request sensor permission" class="col-xs-12 btn-warning btn" style="margin-top: 10%;"/>
-
         </div>
         <div role="tabpanel" class="tab-pane" id="dm">
 
@@ -151,6 +149,8 @@
           <textarea class="col-xs-12 form-control" id="error-message" style="height:100px" placeholder="Log area..." disabled></textarea>
         </div>
       </div>
+      <input type="button" onclick="requestSensorPermission()" value="request sensor permission" class="col-xs-12 btn-warning btn" style="margin-top: 10%; display: none;" id='requestPermission'/>
+
 
     </div>
 
@@ -173,6 +173,7 @@
       gn = new GyroNorm();
 
       gn.init(args).then(function() {
+        $('#requestPermission').hide();
         var isAvailable = gn.isAvailable();
         if(!isAvailable.deviceOrientationAvailable) {
           logger({message:'Device orientation is not available.'});
@@ -192,7 +193,7 @@
 
         start_gn();
       }).catch(function(e){
-
+        $('#requestPermission').show();
         console.log(e);
         
       });
