@@ -242,7 +242,9 @@
     }
 
     function requestSensorPermission() {
-      gn.requestPermission( init_gn );
+      gn.requestPermission().then( function() {
+        init_gn();
+      } );
 		}
 
     function showDO() {
