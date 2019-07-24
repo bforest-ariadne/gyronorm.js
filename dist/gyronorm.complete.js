@@ -1579,7 +1579,7 @@ window.FULLTILT = FULLTILT;
   GyroNorm.prototype.init = function(options) {
     // Assign options that are passed with the constructor function
     if (options && options.frequency) _frequency = options.frequency;
-    if (options && options.gravityNormalized) _gravityNormalized = options.gravityNormalized;
+    if (options && typeof options.gravityNormalized === 'boolean') _gravityNormalized = options.gravityNormalized;
     if (options && options.orientationBase) _orientationBase = options.orientationBase;
     if (options && typeof options.decimalCount === 'number' && options.decimalCount >= 0) _decimalCount = parseInt(options.decimalCount);
     if (options && options.logger) _logger = options.logger;
@@ -1749,6 +1749,28 @@ window.FULLTILT = FULLTILT;
     return _isRunning;
   }
 
+  /*
+  *
+  * Requests DeviceMotionEvent permission if available and returns a promise
+  *
+  */
+  GyroNorm.prototype.requestPermission = function() {
+    return new Promise( function (resolve, reject) {
+      if ( window.DeviceMotionEvent.requestPermission && !_isReady  ) {
+        window.DeviceMotionEvent.requestPermission()
+        .then( function (response) {
+          if (response == 'granted') {
+            // permission granted
+            resolve();
+          } else {
+            // permission not granted
+            reject();
+          }
+        })
+      }
+    });
+  }
+
   /*-------------------------------------------------------*/
   /* PRIVATE FUNCTIONS */
 
@@ -1825,6 +1847,9 @@ window.FULLTILT = FULLTILT;
       snapShot.dm.gx *= _gravityCoefficient;
       snapShot.dm.gy *= _gravityCoefficient;
       snapShot.dm.gz *= _gravityCoefficient;
+      snapShot.dm.x *= _gravityCoefficient;
+      snapShot.dm.y *= _gravityCoefficient;
+      snapShot.dm.z *= _gravityCoefficient;
     }
 
     return snapShot;
